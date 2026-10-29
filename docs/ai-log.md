@@ -28,3 +28,21 @@ AI suggestions were reviewed during development, and explanations were used to i
 5. Remaining Verification
 
 Before submitting Build One, I will verify the booking and cancellation logic, waitlist behaviour, booking-reference lookup, demo output, automated tests, and GitHub submission requirements.
+
+Build 2 — Event Search, Filtering and Sorting
+
+AI tool used: ChatGPT
+
+Purpose: To understand and implement event searching, filtering, and sorting.
+
+Assistance received:
+
+* Implementing event search by title, city, and venue.
+* Filtering events by city, date range, and ticket price.
+* Sorting events by date, price, and ticket availability.
+* Debugging errors and correcting the functions.
+* Writing and running tests using Node.js’s built-in test runner.
+
+Testing: All 9 tests passed after debugging.
+
+My learning: I am still learning how the functions work and need to practise writing them independently.

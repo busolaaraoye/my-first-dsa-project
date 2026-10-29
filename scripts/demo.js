@@ -14,7 +14,12 @@ import {
 const store = createStore();
 
 //2. Create an event 
-const event = createEvent(store, "Lagos Tech Annual Conference");
+const event = createEvent(store, {
+    title: "Lagos Tech Annual Conference",
+    city: "Lagos",
+    venue: "Eko Hotel",
+    date: "2026-12-10"
+});
 
 //3. Add a ticket tier 
 const tier = addTier(event, "VIP", 1500000, 10);
@@ -57,20 +62,20 @@ try {
 console.log("Available tickets after second cancellation:", tier.available);
 
 // 9. Test the waitlist queue 
-const queue = createWaitlistQueue();
+const testQueue = createWaitlistQueue();
 
 // Add three customers 
-queue.enqueue("Ada");
-queue.enqueue("Bayo");
-queue.enqueue("Chika");
+testQueue.enqueue("Ada");
+testQueue.enqueue("Bayo");
+testQueue.enqueue("Chika");
 
 // Check the queue 
-console.log("First customer:", queue.peek());
-console.log("Number waiting:", queue.size());
+console.log("First customer:", testQueue.peek());
+console.log("Number waiting:", testQueue.size());
 
 //Serve the first customer
-console.log("Customer served:", queue.dequeue());
+console.log("Customer served:", testQueue.dequeue());
 
 //Check the queue again 
-console.log("Next customer:", queue.peek());
-console.log("Number waiting now:", queue.size());
+console.log("Next customer:", testQueue.peek());
+console.log("Number waiting now:", testQueue.size());
