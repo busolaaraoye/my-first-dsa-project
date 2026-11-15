@@ -3,80 +3,87 @@ import assert from "node:assert/strict";
 import { matchPath } from "../src/http/router.js";
 import { app } from "../src/http/app.js";
 
+
 test("matchPath captures a route parameter", () => {
-  const result = matchPath("/events/:id", "/events/250");
+    const result = matchPath("/events/:id", "/events/250");
 
-  assert.deepEqual(result, { id: "250" });
+    assert.deepEqual(result, { id: "250" });
 });
 
-test("invalid JSON returns 400 BAD_JSON", async () => {
-  app.listen(0);
 
-  const port = app.address().port;
+test("invalid JSON returns 400 INVALID_JSON", async () => {
+    app.listen(0);
 
-  const response = await fetch(`http://localhost:${port}/health`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: '{"name":'
-  });
+    try {
+        const port = app.address().port;
 
-  const result = await response.json();
+        const response = await fetch(`http://localhost:${port}/health`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: '{"name":'
+        });
 
-  assert.equal(response.status, 400);
-  assert.equal(result.error.code, "BAD_JSON");
+        const result = await response.json();
 
-  await new Promise((resolve) => app.close(resolve));
+        assert.equal(response.status, 400);
+        assert.equal(result.error.code, "INVALID_JSON");
+    } finally {
+        await new Promise((resolve) => app.close(resolve));
+    }
 });
+
 
 test("static server blocks access to files outside public", async () => {
-  app.listen(0);
+    app.listen(0);
 
-  const port = app.address().port;
+    try {
+        const port = app.address().port;
 
-  try {
-    const response = await fetch(
-      `http://localhost:${port}/%2e%2e%2fpackage.json`
-    );
+        const response = await fetch(
+            `http://localhost:${port}/%2e%2e%2fpackage.json`
+        );
 
-    const result = await response.json();
+        const result = await response.json();
 
-    assert.equal(response.status, 403);
-    assert.equal(result.error.code, "FORBIDDEN");
-  } finally {
-    await new Promise((resolve) => app.close(resolve));
-  }
+        assert.equal(response.status, 403);
+        assert.equal(result.error.code, "FORBIDDEN");
+    } finally {
+        await new Promise((resolve) => app.close(resolve));
+    }
 });
+
 
 test("GET /health returns 200 and server status ok", async () => {
-  app.listen(0);
+    app.listen(0);
 
-  const port = app.address().port;
+    try {
+        const port = app.address().port;
 
-  try {
-    const response = await fetch(`http://localhost:${port}/health`);
-    const result = await response.json();
+        const response = await fetch(`http://localhost:${port}/health`);
+        const result = await response.json();
 
-    assert.equal(response.status, 200);
-    assert.deepEqual(result, { status: "ok" });
-  } finally {
-    await new Promise((resolve) => app.close(resolve));
-  }
+        assert.equal(response.status, 200);
+        assert.deepEqual(result, { status: "ok" });
+    } finally {
+        await new Promise((resolve) => app.close(resolve));
+    }
 });
 
+
 test("GET / serves the Eventry homepage", async () => {
-  app.listen(0);
+    app.listen(0);
 
-  const port = app.address().port;
+    try {
+        const port = app.address().port;
 
-  try {
-    const response = await fetch(`http://localhost:${port}/`);
-    const result = await response.text();
+        const response = await fetch(`http://localhost:${port}/`);
+        const result = await response.text();
 
-    assert.equal(response.status, 200);
-    assert.match(result, /Welcome to Eventry!/);
-  } finally {
-    await new Promise((resolve) => app.close(resolve));
-  }
+        assert.equal(response.status, 200);
+        assert.match(result, /Welcome to Eventry!/);
+    } finally {
+        await new Promise((resolve) => app.close(resolve));
+    }
 });

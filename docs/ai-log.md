@@ -98,3 +98,31 @@ I also learned how to identify and correct errors while preserving existing work
 Review and responsibility
 
 AI suggestions were reviewed, tested and corrected during development. I remain responsible for understanding the implementation and ensuring that the final project meets the course requirements.
+
+Build 4 – Working REST API
+
+Issues encountered and corrections
+
+1. Invalid JSON error-code mismatch
+    * The router test initially expected BAD_JSON, but the application returned INVALID_JSON.
+    * Updated the test to expect INVALID_JSON, matching the application’s error response.
+2. API test servers were not closing reliably
+    * Some router tests produced ERR_SERVER_ALREADY_LISTEN.
+    * Updated the tests to close their servers using try/finally, so cleanup happens even when an assertion fails.
+3. Router implementation issues
+    * Duplicate router content was identified and cleaned up.
+    * Corrected file-serving issues, including an import naming error and a function-name mismatch.
+
+Verification
+
+* Confirmed the health endpoint responds.
+* Created an event through the API.
+* Added a ticket tier and published the event.
+* Confirmed published events appear in the event list.
+* Created a booking for two tickets.
+* Successfully paid for the booking using the mock payment gateway.
+* Ran npm test: 50 tests passed, 0 failed.
+
+Notes
+
+The API uses in-memory storage, so its data is reset when the server restarts. The mock payment gateway uses test tokens and does not process real card details.

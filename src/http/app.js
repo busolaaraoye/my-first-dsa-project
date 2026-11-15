@@ -20,7 +20,7 @@ async function handleRequest(req, res) {
 
       res.end(JSON.stringify({
         error: {
-          code: "BAD_JSON",
+          code: "INVALID_JSON",
           message: "Request body contains invalid JSON"
         }
       }));
